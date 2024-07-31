@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class Pellet : MonoBehaviour
 {
+    public Player player;
     private float duration = 0;
-    private float maxDuration = 1f;
+    private float maxDuration = 0.4f;
 
     void Update()
     {
@@ -19,8 +20,11 @@ public class Pellet : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Monster")) {
-            Destroy(gameObject);
-            Destroy(collision.gameObject);
+            if (player != null && player.monsterIsInSight) {
+                player.monstersKilled++;
+            }
+            Destroy(collision.transform.parent.gameObject); // destroy monster
+            Destroy(gameObject); // destroy pellet
         }
     }
 }

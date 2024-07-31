@@ -16,16 +16,18 @@ public class PropellerItem : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
-            Rigidbody2D playerRb = other.GetComponent<Rigidbody2D>();
+        if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBody")) {
+            GameObject playerObj = other.transform.parent.gameObject;
+            Rigidbody2D playerRb = playerObj.GetComponent<Rigidbody2D>();
             if (playerRb != null) {
-                if (other.transform.childCount > 0) return;
-
-                Player player = other.GetComponent<Player>();
+                Player player = playerObj.GetComponent<Player>();
+                if (player.isUsingItem) return;
+                
                 player.isUsingItem = true;
 
-                transform.SetParent(other.transform);
+                transform.SetParent(playerObj.transform);
                 transform.localPosition = new Vector3(0, 0.75f, 0);
+                GetComponent<Collider2D>().isTrigger = false;
                 StartCoroutine(ApplyPropeller(playerRb, player));
             }
         }

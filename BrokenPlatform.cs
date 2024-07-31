@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BrokenPlatform : MonoBehaviour
@@ -16,8 +17,8 @@ public class BrokenPlatform : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D collision) {
-        Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
-        if (collision.CompareTag("Player") && rb.velocity.y <= 0.1f) {
+        Rigidbody2D rb = collision.transform.parent.gameObject.GetComponent<Rigidbody2D>();
+        if (rb.velocity.y <= 0.1f) {
             BreakPlatform();
         }
     }
